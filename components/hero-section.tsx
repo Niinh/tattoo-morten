@@ -31,7 +31,7 @@ export function HeroSection() {
           src="https://images.pexels.com/photos/32775703/pexels-photo-32775703.png"
           alt="Mulher com uma tatuagem de flor fine line nas costas"
           fill
-          className="object-cover object-top sm:object-center"
+          className="object-contain sm:object-cover object-center scale-[4] sm:scale-100"
           priority
           quality={95}
           sizes="100vw"
@@ -51,7 +51,7 @@ export function HeroSection() {
       </div>
 
       {/* Main Content */}
-      <div className="brand-banner-content h-full flex flex-col items-center justify-center">
+      <div className="brand-banner-content h-full flex flex-col items-center justify-end pb-16">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,15 +67,7 @@ export function HeroSection() {
             Estúdio de Tatuagem
           </motion.p>
 
-          {/* Main Brand Logo */}
-          <motion.h1
-            className="brand-logo font-playfair text-gradient"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.8, delay: 0.5, ease: "easeOut" }}
-          >
-            Morten Tattoo
-          </motion.h1>
+        
 
           {/* Main Tagline */}
           <motion.h2
@@ -134,26 +126,6 @@ export function HeroSection() {
                 Ver portfólio
               </motion.div>
             </Button>
-          </motion.div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.8 }}
-            className="flex flex-col items-center"
-          >
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4 font-light">
-              Descubra nossa arte
-            </p>
-            <motion.button
-              onClick={() => scrollToSection('features')}
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="text-gray-400 hover:text-white transition-colors duration-300 bg-transparent border-none cursor-pointer"
-            >
-              <ArrowDown size={18} />
-            </motion.button>
           </motion.div>
         </motion.div>
       </div>

@@ -58,9 +58,7 @@ export function Navigation() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'glass-subtle' : ''
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-black transition-all duration-500"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
@@ -136,7 +134,10 @@ export function Navigation() {
               {navItems.map((item, index) => (
                 <motion.button
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setTimeout(() => scrollToSection(item.href), 250);
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ 
                     opacity: 1, 
