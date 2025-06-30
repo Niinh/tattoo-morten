@@ -35,15 +35,38 @@ export function Footer() {
           >
             <h4 className="text-base lg:text-lg font-medium mb-4 lg:mb-6 text-white">Navegação</h4>
             <nav className="space-y-2 lg:space-y-3">
-              {['Início', 'Portfólio', 'Sobre', 'Estilos', 'Contato'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  {item}
-                </a>
-              ))}
+              {['Início', 'Portfólio', 'Sobre', 'Estilos', 'Contato'].map((item) => {
+  // Mapeamento para id das seções igual navigation
+  const sectionMap: Record<string, string> = {
+    'Início': 'home',
+    'Portfólio': 'portfolio',
+    'Sobre': 'about',
+    'Estilos': 'styles',
+    'Contato': 'contact',
+  };
+  const sectionId = sectionMap[item] || item.toLowerCase();
+  return (
+    <button
+      key={item}
+      type="button"
+      className="block text-gray-400 hover:text-white transition-colors text-sm bg-transparent border-none p-0 w-full text-left cursor-pointer"
+      onClick={() => {
+        const targetElement = document.getElementById(sectionId);
+        if (targetElement) {
+          const headerHeight = 80;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        }
+      }}
+    >
+      {item}
+    </button>
+  );
+})}
             </nav>
           </motion.div>
 

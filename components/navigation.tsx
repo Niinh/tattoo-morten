@@ -14,6 +14,16 @@ const navItems = [
 ];
 
 export function Navigation() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -55,71 +65,64 @@ export function Navigation() {
   };
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-black transition-all duration-500"
+    <header
+      className={`fixed top-0 left-0 w-full z-50 shadow-none transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur' : 'bg-transparent'}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 lg:h-20">
-          {/* Logo - Clicável */}
-          <motion.button
-            onClick={scrollToTop}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex-shrink-0 cursor-pointer bg-transparent border-none p-0"
-          >
-            <h1 className="text-xl md:text-2xl lg:text-3xl font-playfair font-light tracking-[0.2em] text-white hover:text-gray-300 transition-colors duration-300">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:py-4 lg:py-5">
+        {/* Logo - Clicável */}
+        <motion.button
+          onClick={scrollToTop}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex-shrink-0 cursor-pointer bg-transparent border-none p-0"
+        >
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-playfair font-light tracking-[0.2em] text-white hover:text-gray-300 transition-colors duration-300">
             Morten Tattoo
-            </h1>
-          </motion.button>
+          </h1>
+        </motion.button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 lg:space-x-12">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-xs lg:text-sm uppercase tracking-[0.2em] text-gray-300 hover:text-white transition-colors duration-300 bg-transparent border-none cursor-pointer"
-              >
-                {item.name}
-              </motion.button>
-            ))}
-          </nav>
-
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex space-x-8 lg:space-x-10 items-center">
+          {navItems.map((item) => (
+            <motion.button
+              key={item.name}
+              onClick={() => scrollToSection(item.href)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`text-base font-medium uppercase tracking-[0.2em] transition-colors px-3 py-2 ${scrolled ? 'text-white hover:text-gray-300' : 'text-black hover:text-gray-700'}`}
+            >
+              {item.name}
+            </motion.button>
+          ))}
           {/* Social Links - Desktop */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            <motion.a
-              href="https://www.instagram.com/yasmy_tattoo/"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Instagram size={18} />
-            </motion.a>
-            <motion.a
-              href="tel:+5511999999999"
-              whileHover={{ scale: 1.1 }}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Phone size={18} />
-            </motion.a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="md:hidden text-white hover:bg-white/10 p-2"
-            onClick={() => setIsOpen(!isOpen)}
+          <motion.a
+            href="https://www.instagram.com/yasmy_tattoo/"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.1 }}
+            className={`transition-colors ${scrolled ? 'text-gray-400 hover:text-white' : 'text-black hover:text-gray-700'}`}
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </Button>
+            <Instagram size={18} color={scrolled ? undefined : '#000'} />
+          </motion.a>
+          <motion.a
+            href="tel:+5511999999999"
+            whileHover={{ scale: 1.1 }}
+            className={`transition-colors ${scrolled ? 'text-gray-400 hover:text-white' : 'text-black hover:text-gray-700'}`}
+          >
+            <Phone size={18} color={scrolled ? undefined : '#000'} />
+          </motion.a>
         </div>
-      </div>
+
+        {/* Mobile Menu Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="md:hidden text-white hover:bg-white/10 p-2"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
+        </Button>
+      </nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -144,12 +147,11 @@ export function Navigation() {
                     x: 0,
                     transition: { delay: index * 0.1 }
                   }}
-                  className="block w-full text-left text-base uppercase tracking-[0.2em] text-gray-300 hover:text-white transition-colors py-3 bg-transparent border-none cursor-pointer"
+                  className={`block w-full text-left text-base uppercase tracking-[0.2em] transition-colors py-3 bg-transparent border-none cursor-pointer ${scrolled ? 'text-white hover:text-gray-200' : 'text-black hover:text-gray-700'}`}
                 >
                   {item.name}
                 </motion.button>
               ))}
-              
               {/* Social Links - Mobile */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -181,6 +183,6 @@ export function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }
